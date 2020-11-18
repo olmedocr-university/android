@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">My Calculator</string>
+    <string name="memory_add_button">M+</string>
+    <string name="memory_button">M</string>
+    <string name="clear_button">C</string>
+    <string name="add_button">+</string>
+    <string name="number_9_button">9</string>
+    <string name="number_8_button">8</string>
+    <string name="number_7_button">7</string>
+    <string name="number_6_button">6</string>
+    <string name="number_5_button">5</string>
+    <string name="number_4_button">4</string>
+    <string name="number_3_button">3</string>
+    <string name="number_2_button">2</string>
+    <string name="number_1_button">1</string>
+    <string name="number_0_button">0</string>
+    <string name="decimal_button">.</string>
+    <string name="power_button">POW</string>
+    <string name="sqrt_button">√</string>
+    <string name="percentage_button">%</string>
+    <string name="off_button">OFF</string>
+    <string name="sign_button">+/-</string>
+    <string name="subtract_button">-</string>
+    <string name="multiply_button">*</string>
+    <string name="divide_button">/</string>
+    <string name="equal_button">=</string>
+    <string name="tan_button">TAN</string>
+    <string name="pi_button">π</string>
+    <string name="memory_subtract_button">M-</string>
+    <string name="divide_by_x_button">1/x</string>
+    <string name="cos_button">COS</string>
+    <string name="delete_button">DEL</string>
+    <string name="sin_button">SIN</string>
+    <string name="memory_recall_button">MR</string>
+    <string name="square_button">x²</string>
+    <string name="memory_clear_button">MC</string>
+</resources>
