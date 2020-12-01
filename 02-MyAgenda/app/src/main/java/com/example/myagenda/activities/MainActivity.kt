@@ -1,4 +1,4 @@
-package com.example.myagenda
+package com.example.myagenda.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import com.example.myagenda.R
+import com.example.myagenda.database.ContactsDatabaseHandler
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,6 +22,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DetailActivity::class.java)
             startActivity(intent)
         }
+
+        val dbHandler = ContactsDatabaseHandler(this)
+        val cursor = dbHandler.getAllContacts()
+        cursor!!.moveToFirst()
+
+        print(cursor)
+
+        cursor.close()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
