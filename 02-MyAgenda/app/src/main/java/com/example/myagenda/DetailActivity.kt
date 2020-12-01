@@ -19,5 +19,14 @@ class DetailActivity : AppCompatActivity() {
         (toolbar as Toolbar).setNavigationOnClickListener {
             onBackPressed()
         }
+
+        button_save.setOnClickListener {
+            // Check fields
+            // Store data in DB
+        }
+
+        button_delete.setOnClickListener {
+            // Delete the current element in DB IF it exists, if not, just clear the text and go back
+        }
     }
 }
