@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.myagenda.models.Contact
@@ -39,8 +40,8 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
             put(KEY_CONTACT_MOBILE, contact.mobile)
             put(KEY_CONTACT_EMAIL, contact.email)
         }
-        val db = this.readableDatabase
-        val newRowId = db.insert(TABLE_NAME, null, values)
+        val db = this.writableDatabase
+        val newRowId = db.insertWithOnConflict(TABLE_NAME, null, values, CONFLICT_REPLACE)
         Log.d(TAG, "addContact: added new contact with id $newRowId")
     }
 
@@ -55,7 +56,7 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
 
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "contacts.db"
         const val TABLE_NAME = "contacts"
         const val KEY_CONTACT_ID = "id"

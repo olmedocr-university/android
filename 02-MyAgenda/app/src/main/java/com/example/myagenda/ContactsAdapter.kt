@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myagenda.models.Contact
 import kotlinx.android.synthetic.main.item_contact.view.*
 
-class ContactsAdapter(private val data: Array<Contact>): RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
+class ContactsAdapter(private val data: ArrayList<Contact>): RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_contact, parent, false)
         return ContactsViewHolder(view)
