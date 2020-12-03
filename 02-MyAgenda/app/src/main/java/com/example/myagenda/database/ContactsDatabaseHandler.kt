@@ -45,18 +45,43 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
         Log.d(TAG, "addContact: added new contact with id $newRowId")
     }
 
-    fun updateContact(contact: Contact) {
-        // TODO:
+    fun getAllContacts(): ArrayList<Contact> {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+        return getDataFromCursor(cursor)
     }
 
-    fun getAllContacts(): Cursor? {
-        val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
+    private fun getDataFromCursor(cursor: Cursor): ArrayList<Contact>{
+        var contacts: ArrayList<Contact> = ArrayList()
+
+        if (!cursor.moveToFirst()) {
+            return contacts
+        }
+
+        val nameIndex = cursor.getColumnIndex(KEY_CONTACT_NAME)
+        val addressIndex = cursor.getColumnIndex(KEY_CONTACT_ADDRESS)
+        val phoneIndex = cursor.getColumnIndex(KEY_CONTACT_PHONE)
+        val mobileIndex = cursor.getColumnIndex(KEY_CONTACT_MOBILE)
+        val emailIndex = cursor.getColumnIndex(KEY_CONTACT_EMAIL)
+
+        do {
+            contacts.add(Contact(
+                    cursor.getString(nameIndex),
+                    cursor.getString(addressIndex),
+                    cursor.getInt(phoneIndex),
+                    cursor.getInt(mobileIndex),
+                    cursor.getString(emailIndex)
+            ))
+        } while (cursor.moveToNext())
+
+        cursor.close()
+
+        return contacts
     }
 
 
     companion object {
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 5
         private const val DATABASE_NAME = "contacts.db"
         const val TABLE_NAME = "contacts"
         const val KEY_CONTACT_ID = "id"

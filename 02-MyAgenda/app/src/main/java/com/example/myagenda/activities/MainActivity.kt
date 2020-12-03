@@ -1,28 +1,25 @@
 package com.example.myagenda.activities
 
 import android.content.Intent
-import android.database.Cursor
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myagenda.ContactsAdapter
 import com.example.myagenda.R
+import com.example.myagenda.adapters.ContactsAdapter
+import com.example.myagenda.adapters.OnItemClickListener
 import com.example.myagenda.database.ContactsDatabaseHandler
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_ADDRESS
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_EMAIL
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_ID
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_MOBILE
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_NAME
-import com.example.myagenda.database.ContactsDatabaseHandler.Companion.KEY_CONTACT_PHONE
 import com.example.myagenda.models.Contact
 import kotlinx.android.synthetic.main.activity_main.*
 
+private const val LAUNCH_NEW_CONTACT_ACTIVITY: Int = 1
+private const val LAUNCH_EXISTING_CONTACT_ACTIVITY: Int = 2
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
+    // TODO: implement search
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,18 +28,13 @@ class MainActivity : AppCompatActivity() {
 
         fab_add.setOnClickListener {
             val intent = Intent(this, DetailActivity::class.java)
-            startActivityForResult(intent, )
+            startActivityForResult(intent, LAUNCH_NEW_CONTACT_ACTIVITY)
         }
 
         val dbHandler = ContactsDatabaseHandler(this)
-        val cursor = dbHandler.getAllContacts()
-        val data = getDataFromCursor(cursor!!)
-
-        recycler_contacts.adapter = ContactsAdapter(data)
+        recycler_contacts.adapter = ContactsAdapter(dbHandler.getAllContacts(), this)
         recycler_contacts.layoutManager = LinearLayoutManager(this)
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -53,47 +45,44 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_button_export -> exportContacts()
             R.id.menu_button_import -> importContacts()
-            else -> { // Note the block
+            else -> {
                 print("Search not implemented")
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onItemClicked(contact: Contact) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("Contact", contact)
+
+        startActivityForResult(intent, LAUNCH_EXISTING_CONTACT_ACTIVITY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == LAUNCH_NEW_CONTACT_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                val dbHandler = ContactsDatabaseHandler(this)
+                (recycler_contacts.adapter as ContactsAdapter).updateData(dbHandler.getAllContacts())
+            }
+        } else if (requestCode == LAUNCH_EXISTING_CONTACT_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                // TODO: update ONLY the edited contact
+                val dbHandler = ContactsDatabaseHandler(this)
+
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     private fun exportContacts() {
-        // TODO:
+        // TODO: implement function
     }
 
     private fun importContacts() {
-        // TODO:
+        // TODO: implement function
     }
 
-    private fun getDataFromCursor(cursor: Cursor): ArrayList<Contact>{
-        var contacts: ArrayList<Contact> = ArrayList()
 
-        if (!cursor.moveToFirst()) {
-            return contacts
-        }
-
-        val idIndex = cursor.getColumnIndex(KEY_CONTACT_ID)
-        val nameIndex = cursor.getColumnIndex(KEY_CONTACT_NAME)
-        val addressIndex = cursor.getColumnIndex(KEY_CONTACT_ADDRESS)
-        val phoneIndex = cursor.getColumnIndex(KEY_CONTACT_PHONE)
-        val mobileIndex = cursor.getColumnIndex(KEY_CONTACT_MOBILE)
-        val emailIndex = cursor.getColumnIndex(KEY_CONTACT_EMAIL)
-
-        do {
-            contacts.add(Contact(
-                        cursor.getString(nameIndex),
-                        cursor.getString(addressIndex),
-                        cursor.getInt(phoneIndex),
-                        cursor.getInt(mobileIndex),
-                        cursor.getString(emailIndex)
-                    ))
-        } while (cursor.moveToNext())
-
-        cursor.close()
-
-        return contacts
-    }
 }
