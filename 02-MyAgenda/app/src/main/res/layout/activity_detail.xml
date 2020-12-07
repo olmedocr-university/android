@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,107 +12,99 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_name"
-        android:layout_width="match_parent"
+    <ScrollView
         android:layout_height="0dp"
-        android:hint="Name"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:layout_constraintBottom_toTopOf="@+id/text_input_layout_address"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_weight="1"
-        app:startIconDrawable="@android:drawable/ic_menu_delete"
-        android:paddingTop="8dp"
-        android:paddingHorizontal="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_address"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="Address"
-        app:counterEnabled="true"
-        app:counterMaxLength="60"
-        app:layout_constraintBottom_toTopOf="@+id/text_input_layout_telephone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_name"
-        app:layout_constraintVertical_weight="1"
-        app:startIconDrawable="@android:drawable/ic_menu_delete"
-        android:paddingTop="8dp"
-        android:paddingHorizontal="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_telephone"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="Telephone"
-        app:layout_constraintBottom_toTopOf="@+id/text_input_layout_mobile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_address"
-        app:layout_constraintVertical_weight="1"
-        app:startIconDrawable="@android:drawable/ic_menu_delete"
-        android:paddingTop="8dp"
-        android:paddingHorizontal="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_mobile"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="Mobile"
-        app:layout_constraintBottom_toTopOf="@+id/text_input_layout_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_telephone"
-        app:layout_constraintVertical_weight="1"
-        app:startIconDrawable="@android:drawable/ic_menu_delete"
-        android:paddingTop="8dp"
-        android:paddingHorizontal="16dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_email"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="Email"
         app:layout_constraintBottom_toTopOf="@+id/button_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_layout_mobile"
-        app:layout_constraintVertical_weight="1"
-        app:startIconDrawable="@android:drawable/ic_menu_delete"
-        android:paddingTop="8dp"
-        android:paddingHorizontal="16dp">
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:isScrollContainer="false">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical"
+            android:weightSum="5"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:hint="Name"
+                app:counterEnabled="true"
+                app:counterMaxLength="30"
+                app:startIconDrawable="@drawable/ic_baseline_person_24"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_address"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:hint="Address"
+                app:counterEnabled="true"
+                app:counterMaxLength="60"
+                app:startIconDrawable="@drawable/ic_baseline_home_24"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_telephone"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:hint="Telephone"
+                app:startIconDrawable="@drawable/ic_baseline_phone_24"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:hint="Mobile"
+                app:startIconDrawable="@drawable/ic_baseline_phone_android_24"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:hint="Email"
+                app:startIconDrawable="@drawable/ic_baseline_email_24"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/button_save"

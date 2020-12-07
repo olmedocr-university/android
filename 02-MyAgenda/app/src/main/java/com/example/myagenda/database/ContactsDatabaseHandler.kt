@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.myagenda.models.Contact
 
-class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
+class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     private val TAG = "ContactsDatabaseHandler"
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -32,7 +32,7 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
         onCreate(db)
     }
 
-    fun addContact(contact: Contact) {
+    fun addContact(contact: Contact): Long {
         val values = ContentValues().apply {
             put(KEY_CONTACT_NAME, contact.name)
             put(KEY_CONTACT_ADDRESS, contact.address)
@@ -41,9 +41,29 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
             put(KEY_CONTACT_EMAIL, contact.email)
         }
         val db = this.writableDatabase
-        val newRowId = db.insertWithOnConflict(TABLE_NAME, null, values, CONFLICT_REPLACE)
+        val newRowId = db.insert(TABLE_NAME, null, values)
         Log.d(TAG, "addContact: added new contact with id $newRowId")
+        return newRowId
     }
+
+    fun updateContact(contact: Contact) {
+        val values = ContentValues().apply {
+            put(KEY_CONTACT_NAME, contact.name)
+            put(KEY_CONTACT_ADDRESS, contact.address)
+            put(KEY_CONTACT_PHONE, contact.phone)
+            put(KEY_CONTACT_MOBILE, contact.mobile)
+            put(KEY_CONTACT_EMAIL, contact.email)
+        }
+        val db = this.writableDatabase
+        db.update(TABLE_NAME, values, "$KEY_CONTACT_ID = ?", Array(1){contact.id.toString()})
+        Log.d(TAG, "updateContact: updated contact with id $contact.id")
+    }
+
+    fun deleteContact(contactId: Long) {
+        val db = this.writableDatabase
+        db.delete(TABLE_NAME, "$KEY_CONTACT_ID = ?", Array(1){contactId.toString()})
+    }
+
 
     fun getAllContacts(): ArrayList<Contact> {
         val db = this.readableDatabase
@@ -51,13 +71,20 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
         return getDataFromCursor(cursor)
     }
 
-    private fun getDataFromCursor(cursor: Cursor): ArrayList<Contact>{
+    fun dropAllContacts() {
+        val db = this.writableDatabase
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        onCreate(db)
+    }
+
+    private fun getDataFromCursor(cursor: Cursor): ArrayList<Contact> {
         var contacts: ArrayList<Contact> = ArrayList()
 
         if (!cursor.moveToFirst()) {
             return contacts
         }
 
+        val idIndex = cursor.getColumnIndex(KEY_CONTACT_ID)
         val nameIndex = cursor.getColumnIndex(KEY_CONTACT_NAME)
         val addressIndex = cursor.getColumnIndex(KEY_CONTACT_ADDRESS)
         val phoneIndex = cursor.getColumnIndex(KEY_CONTACT_PHONE)
@@ -66,10 +93,11 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
 
         do {
             contacts.add(Contact(
+                    cursor.getLong(idIndex),
                     cursor.getString(nameIndex),
                     cursor.getString(addressIndex),
-                    cursor.getInt(phoneIndex),
-                    cursor.getInt(mobileIndex),
+                    cursor.getString(phoneIndex),
+                    cursor.getString(mobileIndex),
                     cursor.getString(emailIndex)
             ))
         } while (cursor.moveToNext())
@@ -81,7 +109,7 @@ class ContactsDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
 
 
     companion object {
-        private const val DATABASE_VERSION = 5
+        private const val DATABASE_VERSION = 13
         private const val DATABASE_NAME = "contacts.db"
         const val TABLE_NAME = "contacts"
         const val KEY_CONTACT_ID = "id"
