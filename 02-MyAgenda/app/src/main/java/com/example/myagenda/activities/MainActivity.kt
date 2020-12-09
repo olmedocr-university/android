@@ -21,6 +21,7 @@ import com.example.myagenda.adapters.ContactsAdapter
 import com.example.myagenda.adapters.OnItemClickListener
 import com.example.myagenda.database.ContactsDatabaseHandler
 import com.example.myagenda.models.Contact
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -129,9 +130,12 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, SearchView.OnQuer
             val contacts = ContactsDatabaseHandler(this).getAllContacts()
             val json = Gson().toJson(contacts)
             writeOnSD(json)
+            val snackbar = Snackbar.make(coordinator_layout_main, "Contacts correctly exported", Snackbar.LENGTH_LONG)
+            snackbar.show()
 
         } catch (ex: Exception) {
-            // TODO: put sncakbar throwing error
+            val snackbar = Snackbar.make(coordinator_layout_main, "Error while exporting contacts", Snackbar.LENGTH_LONG)
+            snackbar.show()
             ex.printStackTrace()
         }
 
@@ -150,7 +154,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, SearchView.OnQuer
             val dbHandler = ContactsDatabaseHandler(this)
 
             if (json == null) {
-                // TODO: put sncakbar throwing error
+                val snackbar = Snackbar.make(coordinator_layout_main, "Error, the imported file is null", Snackbar.LENGTH_LONG)
+                snackbar.show()
             } else {
                 val itemType = object : TypeToken<ArrayList<Contact>>() {}.type
                 val contacts = Gson().fromJson<ArrayList<Contact>>(json, itemType)
@@ -162,10 +167,12 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, SearchView.OnQuer
             }
             val adapter = recycler_contacts.adapter as ContactsAdapter
             adapter.updateData(dbHandler.getAllContacts())
-            // TODO: put sncakbar showing complete
+            val snackbar = Snackbar.make(coordinator_layout_main, "Contacts correctly imported", Snackbar.LENGTH_LONG)
+            snackbar.show()
 
         } catch (ex: Exception) {
-            // TODO: put sncakbar throwing error
+            val snackbar = Snackbar.make(coordinator_layout_main, "Error while importing contacts", Snackbar.LENGTH_LONG)
+            snackbar.show()
             ex.printStackTrace()
         }
     }
@@ -178,12 +185,15 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, SearchView.OnQuer
                 file.write(data)
                 file.close()
             } catch (ex: Exception) {
-                // TODO: put snackbar aqui deerror
                 Log.e("ERROR", "Error al escribir fichero a tarjeta SD")
+                val snackbar = Snackbar.make(coordinator_layout_main, "Error while writing to the SD", Snackbar.LENGTH_LONG)
+                snackbar.show()
             }
         } else {
-            // TODO: put snackbar aqui de error
             Log.d("ERROR", "No ha sido posible crear archivos/carpetas")
+            val snackbar = Snackbar.make(coordinator_layout_main, "Error, SD is not available", Snackbar.LENGTH_LONG)
+            snackbar.show()
+
         }
     }
 
@@ -196,12 +206,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, SearchView.OnQuer
                 data = file.readLine()
                 file.close()
             } catch (ex: java.lang.Exception) {
-                // TODO: put snackbar aqui deerror
                 Log.e("ERROR", "Error al leer fichero desde tarjeta SD")
+                val snackbar = Snackbar.make(coordinator_layout_main, "Error while reding from the SD", Snackbar.LENGTH_LONG)
+                snackbar.show()
             }
         } else {
-            // TODO: put snackbar aqui deerror
             Log.d("ERROR", "No ha sido posible crear archivos/carpetas");
+            val snackbar = Snackbar.make(coordinator_layout_main, "Error, SD is not available", Snackbar.LENGTH_LONG)
+            snackbar.show()
         }
 
         return data
