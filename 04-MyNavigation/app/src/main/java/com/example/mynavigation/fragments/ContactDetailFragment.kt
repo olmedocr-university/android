@@ -7,15 +7,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.mynavigation.R
 import com.example.mynavigation.activities.MainActivity
 import com.example.mynavigation.database.ContactsDatabaseHandler
 import com.example.mynavigation.models.Contact
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contact_detail.*
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM1 = "contact"
 private const val CALL_REQUEST_CODE = 1
 
 /**
@@ -48,7 +51,8 @@ class ContactDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dbHelper = ContactsDatabaseHandler(context!!)
+        val dbHelper = ContactsDatabaseHandler(requireContext())
+
 
         if (contact != null) {
             // Editing existing contact
@@ -104,13 +108,13 @@ class ContactDetailFragment : Fragment() {
                 newContact.id = newContactId
             }
 
-            (activity as MainActivity).goToList()
+            (activity as MainActivity).goToList(it)
         }
 
         button_delete.setOnClickListener {
             dbHelper.deleteContact(contactId!!)
 
-            (activity as MainActivity).goToList()
+            (activity as MainActivity).goToList(it)
         }
     }
 
@@ -124,7 +128,6 @@ class ContactDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> (activity as MainActivity).goToList()
             R.id.menu_button_call -> callContact()
             else -> super.onOptionsItemSelected(item)
         }
@@ -157,8 +160,8 @@ class ContactDetailFragment : Fragment() {
     private fun callContact() {
         try {
             if (Build.VERSION.SDK_INT > 22) {
-                if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity!!, arrayOf(
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(
                         Manifest.permission.CALL_PHONE), CALL_REQUEST_CODE)
                     return
                 }

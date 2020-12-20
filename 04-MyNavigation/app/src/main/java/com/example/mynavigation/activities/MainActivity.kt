@@ -1,12 +1,18 @@
 package com.example.mynavigation.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.mynavigation.R
 import com.example.mynavigation.adapters.OnItemClickListener
 import com.example.mynavigation.fragments.ContactDetailFragment
-import com.example.mynavigation.fragments.ContactListFragment
 import com.example.mynavigation.fragments.OnAddButtonClickListener
 import com.example.mynavigation.models.Contact
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,9 +30,13 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        goToList()
+        val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val toolbar = toolbar as Toolbar
 
-        setSupportActionBar(toolbar as Toolbar)
+        setSupportActionBar(toolbar)
+        setupWithNavController(toolbar, navController, appBarConfiguration)
+
     }
 
     override fun onItemClicked(contact: Contact) {
@@ -37,35 +47,15 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
         goToDetail(null)
     }
 
-    fun goToList() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        supportActionBar?.setDisplayShowHomeEnabled(false)
-        supportActionBar?.title = "My Agenda"
-
-        val manager = supportFragmentManager
-        val transaction = manager.beginTransaction()
-        val fragment = ContactListFragment.newInstance(1)
-        transaction.replace(R.id.activity_main_container, fragment)
-        transaction.commit()
+    fun goToList(view: View) {
+        findNavController(view.id).popBackStack()
     }
 
     fun goToDetail(contact: Contact?) {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        if (contact != null) {
-            supportActionBar?.title = contact.name
-        } else {
-            supportActionBar?.title = "New Contact"
-        }
-
-        val manager = supportFragmentManager
-        val transaction = manager.beginTransaction()
-        val fragment = ContactDetailFragment.newInstance(contact)
-        transaction.replace(R.id.activity_main_container, fragment)
-        transaction.commit()
+        val bundle = Bundle()
+        bundle.putParcelable("contact", contact)
+        findNavController(R.id.nav_host_fragment).navigate(R.id.action_contactListFragment_to_contactDetailFragment, bundle)
     }
-
-
 
 }

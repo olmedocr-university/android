@@ -39,6 +39,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -46,7 +47,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_list_contact, container, false)
-        val dbHandler = ContactsDatabaseHandler(activity!!.applicationContext)
+        val dbHandler = ContactsDatabaseHandler(requireActivity().applicationContext)
 
         with(view) {
             // Set the adapter
@@ -99,13 +100,13 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun exportContacts() {
         try {
             if (Build.VERSION.SDK_INT > 22) {
-                if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE), EXPORT_REQUEST_CODE)
                     return
                 }
             }
-            val contacts = ContactsDatabaseHandler(context!!).getAllContacts()
+            val contacts = ContactsDatabaseHandler(requireContext()).getAllContacts()
             val json = Gson().toJson(contacts)
             writeOnSD(json)
             val snackbar = Snackbar.make(coordinator_layout_main, "Contacts correctly exported", Snackbar.LENGTH_LONG)
@@ -122,14 +123,14 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun importContacts() {
         try {
             if (Build.VERSION.SDK_INT > 22) {
-                if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE), IMPORT_REQUEST_CODE)
                     return
                 }
             }
             val json = readFromSD()
-            val dbHandler = ContactsDatabaseHandler(context!!)
+            val dbHandler = ContactsDatabaseHandler(requireContext())
 
             if (json == null) {
                 val snackbar = Snackbar.make(coordinator_layout_main, "Error, the imported file is null", Snackbar.LENGTH_LONG)
@@ -158,7 +159,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun writeOnSD(data: String) {
         if (isSdAvailable()) {
             try {
-                val path = File(context!!.getExternalFilesDir(null), "contacts.cnt")
+                val path = File(requireContext().getExternalFilesDir(null), "contacts.cnt")
                 val file = OutputStreamWriter(FileOutputStream(path))
                 file.write(data)
                 file.close()
@@ -179,7 +180,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         var data: String? = null
         if (isSdAvailable()) {
             try {
-                val path = File(context!!.getExternalFilesDir(null), "contacts.cnt")
+                val path = File(requireContext().getExternalFilesDir(null), "contacts.cnt")
                 val file = BufferedReader(InputStreamReader(FileInputStream(path)))
                 data = file.readLine()
                 file.close()
