@@ -19,12 +19,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickListener {
 
-    // TODO: handle orientation change in detail fragment
-    // TODO: no snackbars shown
-    // TODO: unable to import nor export
-    // TODO: put two fragments side by side on portrait in list fragment
-    // TODO: call action not working
-    // TODO: add modify or delete an appointment
+    /* TODO:
+        - Navigation Component: que es? Que soluciona?
+        - Partes del navigation component: navigation graph, NavHostFragment y navigation controller
+        - Como funcionan? Que hace cada cosa?
+        - Como se implementa? (Esto hacerlo mientras se va explicando) y añado una pequeña comparación con fragmentManager
+        - NavigationUI de toolbar
+        - Opciones adicionales (rollo menu drawer y bottom navigation bar)
+        - Demo
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
