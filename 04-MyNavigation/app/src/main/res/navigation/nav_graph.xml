@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/contactListFragment">
+
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.example.mynavigation.fragments.ContactListFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_contactListFragment_to_contactDetailFragment"
+            app:destination="@id/contactDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_contactListFragment_to_importFragment"
+            app:destination="@id/importFragment" />
+        <action
+            android:id="@+id/action_contactListFragment_to_exportFragment"
+            app:destination="@id/exportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactDetailFragment"
+        android:name="com.example.mynavigation.fragments.ContactDetailFragment"
+        android:label="New Contact" />
+    <fragment
+        android:id="@+id/exportFragment"
+        android:name="com.example.mynavigation.ExportFragment"
+        android:label="Export Contacts"
+        tools:layout="@layout/fragment_export" />
+    <fragment
+        android:id="@+id/importFragment"
+        android:name="com.example.mynavigation.ImportFragment"
+        android:label="Import Contacts"
+        tools:layout="@layout/fragment_import" />
+</navigation>
