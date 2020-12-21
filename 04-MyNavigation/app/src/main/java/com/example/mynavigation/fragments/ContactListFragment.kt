@@ -81,11 +81,9 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         when (item.itemId) {
             R.id.menu_button_export -> exportContacts()
             R.id.menu_button_import -> importContacts()
-            else -> {
-                print("Search not implemented")
-            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {

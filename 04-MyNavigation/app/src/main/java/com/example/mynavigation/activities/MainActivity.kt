@@ -58,7 +58,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
 
         val bundle = Bundle()
         bundle.putParcelable("contact", contact)
-        findNavController(R.id.nav_host_fragment).navigate(R.id.action_contactListFragment_to_contactDetailFragment, bundle)
+        findNavController(R.id.nav_host_fragment)
+            .navigate(
+                R.id.action_contactListFragment_to_contactDetailFragment,
+                bundle
+            )
     }
 
 }
