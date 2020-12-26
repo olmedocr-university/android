@@ -1,7 +1,7 @@
 package com.example.myagenda.activities
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.myagenda.R
@@ -14,16 +14,38 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickListener {
 
-    // TODO: handle orientation change in detail fragment
-    // TODO: no snackbars shown
-    // TODO: unable to import nor export
-    // TODO: put two fragments side by side on portrait in list fragment
-    // TODO: call action not working
     // TODO: add modify or delete an appointment
+    var isPortrait = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val orientation = this.resources.configuration.orientation
+        isPortrait = orientation == Configuration.ORIENTATION_PORTRAIT
+
+        if (savedInstanceState != null) {
+            // rotation change
+            val manager = supportFragmentManager
+            val transaction = manager.beginTransaction()
+            val mainFragment = manager.findFragmentById(R.id.activity_main_container)
+            val listFragment = manager.findFragmentById(R.id.fragment_list_container)
+            val detailFragment = manager.findFragmentById(R.id.fragment_detail_container)
+
+            if (mainFragment != null) {
+                transaction.remove(mainFragment)
+            }
+
+            if (detailFragment != null) {
+                transaction.remove(detailFragment)
+            }
+
+            if (listFragment != null) {
+                transaction.remove(listFragment)
+            }
+
+            transaction.commit()
+        }
 
         goToList()
 
@@ -46,8 +68,16 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         val fragment = ContactListFragment.newInstance(1)
-        transaction.replace(R.id.activity_main_container, fragment)
+
+        if (isPortrait) {
+            transaction.replace(R.id.activity_main_container, fragment)
+        } else {
+            transaction.replace(R.id.fragment_list_container, fragment)
+            manager.findFragmentById(R.id.fragment_detail_container)?.let { transaction.remove(it) }
+        }
+
         transaction.commit()
+
     }
 
     fun goToDetail(contact: Contact?) {
@@ -63,8 +93,15 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         val fragment = ContactDetailFragment.newInstance(contact)
-        transaction.replace(R.id.activity_main_container, fragment)
+
+        if (isPortrait) {
+            transaction.replace(R.id.activity_main_container, fragment)
+        } else {
+            transaction.replace(R.id.fragment_detail_container, fragment)
+        }
+
         transaction.commit()
+
     }
 
 

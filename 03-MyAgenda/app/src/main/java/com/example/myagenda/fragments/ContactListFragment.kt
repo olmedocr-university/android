@@ -100,9 +100,11 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         try {
             if (Build.VERSION.SDK_INT > 22) {
                 if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(
+                    this.requestPermissions(arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE), EXPORT_REQUEST_CODE)
                     return
+                } else {
+                    Log.d("ContactListFragment", "exportContacts: permission already granted")
                 }
             }
             val contacts = ContactsDatabaseHandler(context!!).getAllContacts()
@@ -123,9 +125,11 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         try {
             if (Build.VERSION.SDK_INT > 22) {
                 if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity as MainActivity, arrayOf(
+                    this.requestPermissions(arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE), IMPORT_REQUEST_CODE)
                     return
+                } else {
+                    Log.d("ContactListFragment", "importContacts: permission already granted")
                 }
             }
             val json = readFromSD()

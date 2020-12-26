@@ -160,14 +160,17 @@ class ContactDetailFragment : Fragment() {
         try {
             if (Build.VERSION.SDK_INT > 22) {
                 if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity!!, arrayOf(
-                        Manifest.permission.CALL_PHONE), CALL_REQUEST_CODE)
+                    this.requestPermissions(
+                            arrayOf(Manifest.permission.CALL_PHONE),
+                            CALL_REQUEST_CODE)
                     return
+                } else {
+                    Log.d("ContactDetailFragment", "callContact: permission already granted")
                 }
             }
             val newIntent = Intent(Intent.ACTION_CALL)
             newIntent.data = Uri.parse("tel:${text_input_layout_mobile.editText?.text.toString()}")
-            startActivity(newIntent)
+            activity?.startActivity(newIntent)
 
         } catch (ex: Exception) {
             ex.printStackTrace()
