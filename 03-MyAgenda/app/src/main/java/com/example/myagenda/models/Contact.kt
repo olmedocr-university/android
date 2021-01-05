@@ -4,9 +4,22 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-data class Contact(var id: Long?, var name: String, var address: String, var phone: String, var mobile: String, var email: String): Parcelable {
+data class Contact(
+    var id: Long?,
+    var name: String,
+    var address: String,
+    var phone: String,
+    var mobile: String,
+    var email: String
+): Parcelable {
 
-    constructor(parcel: Parcel) : this(parcel.readLong(), parcel.readString()!!, parcel.readString()!!, parcel.readString()!!, parcel.readString()!!, parcel.readString()!!) {}
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!) {}
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id!!)

@@ -10,6 +10,13 @@
     </item>
 
     <item
+        android:id="@+id/menu_button_agenda"
+        android:title="Agenda"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        app:showAsAction="always">
+    </item>
+
+    <item
         android:id="@+id/menu_button_export"
         android:title="Export"
         app:showAsAction="never">

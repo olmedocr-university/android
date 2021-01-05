@@ -1,20 +1,26 @@
 package com.example.myagenda.activities
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.myagenda.R
 import com.example.myagenda.adapters.OnItemClickListener
+import com.example.myagenda.fragments.AgendaFragment
 import com.example.myagenda.fragments.ContactDetailFragment
 import com.example.myagenda.fragments.ContactListFragment
 import com.example.myagenda.fragments.OnAddButtonClickListener
 import com.example.myagenda.models.Contact
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickListener {
 
-    // TODO: add modify or delete an appointment
     var isPortrait = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +64,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
 
     override fun onAddButtonClicked() {
         goToDetail(null)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_button_agenda -> goToCalendar()
+            else -> super.onOptionsItemSelected(item)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun goToList() {
@@ -104,6 +118,9 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
 
     }
 
-
+    fun goToCalendar() {
+        val intent = Intent(this, CalendarActivity::class.java)
+        startActivity(intent)
+    }
 
 }
