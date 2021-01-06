@@ -3,23 +3,18 @@ package com.example.myagenda.activities
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.myagenda.R
-import com.example.myagenda.adapters.OnItemClickListener
-import com.example.myagenda.fragments.AgendaFragment
+import com.example.myagenda.adapters.OnContactClickListener
 import com.example.myagenda.fragments.ContactDetailFragment
 import com.example.myagenda.fragments.ContactListFragment
-import com.example.myagenda.fragments.OnAddButtonClickListener
+import com.example.myagenda.fragments.OnAddContactButtonClickListener
 import com.example.myagenda.models.Contact
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
-class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickListener {
+class MainActivity : AppCompatActivity(), OnContactClickListener, OnAddContactButtonClickListener {
 
     var isPortrait = false
 
@@ -58,11 +53,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, OnAddButtonClickL
         setSupportActionBar(toolbar as Toolbar)
     }
 
-    override fun onItemClicked(contact: Contact) {
+    override fun onContactClicked(contact: Contact) {
         goToDetail(contact)
     }
 
-    override fun onAddButtonClicked() {
+    override fun onAddContactButtonClicked() {
         goToDetail(null)
     }
 

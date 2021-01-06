@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myagenda.R
 import com.example.myagenda.activities.MainActivity
 import com.example.myagenda.adapters.ContactsAdapter
-import com.example.myagenda.database.ContactsDatabaseHandler
+import com.example.myagenda.database.MyAgendaDatabaseHandler
 import com.example.myagenda.models.Contact
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -46,7 +46,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_list_contact, container, false)
-        val dbHandler = ContactsDatabaseHandler(activity!!.applicationContext)
+        val dbHandler = MyAgendaDatabaseHandler(activity!!.applicationContext)
 
         with(view) {
             // Set the adapter
@@ -58,7 +58,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
 
             // Set the FAB
             fab_add.setOnClickListener {
-                (activity as MainActivity).onAddButtonClicked()
+                (activity as MainActivity).onAddContactButtonClicked()
             }
 
         }
@@ -107,7 +107,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
                     Log.d("ContactListFragment", "exportContacts: permission already granted")
                 }
             }
-            val contacts = ContactsDatabaseHandler(context!!).getAllContacts()
+            val contacts = MyAgendaDatabaseHandler(context!!).getAllContacts()
             val json = Gson().toJson(contacts)
             writeOnSD(json)
             val snackbar = Snackbar.make(coordinator_layout_main, "Contacts correctly exported", Snackbar.LENGTH_LONG)
@@ -133,7 +133,7 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
                 }
             }
             val json = readFromSD()
-            val dbHandler = ContactsDatabaseHandler(context!!)
+            val dbHandler = MyAgendaDatabaseHandler(context!!)
 
             if (json == null) {
                 val snackbar = Snackbar.make(coordinator_layout_main, "Error, the imported file is null", Snackbar.LENGTH_LONG)
@@ -220,6 +220,6 @@ class ContactListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 }
 
-interface OnAddButtonClickListener{
-    fun onAddButtonClicked()
+interface OnAddContactButtonClickListener{
+    fun onAddContactButtonClicked()
 }

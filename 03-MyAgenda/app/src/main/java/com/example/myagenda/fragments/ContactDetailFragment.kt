@@ -12,10 +12,9 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.myagenda.R
 import com.example.myagenda.activities.MainActivity
-import com.example.myagenda.database.ContactsDatabaseHandler
+import com.example.myagenda.database.MyAgendaDatabaseHandler
 import com.example.myagenda.models.Contact
 import kotlinx.android.synthetic.main.fragment_contact_detail.*
-import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
 private const val CALL_REQUEST_CODE = 1
@@ -41,7 +40,8 @@ class ContactDetailFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -50,7 +50,7 @@ class ContactDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dbHelper = ContactsDatabaseHandler(context!!)
+        val dbHelper = MyAgendaDatabaseHandler(context!!)
 
         if (contact != null) {
             // Editing existing contact

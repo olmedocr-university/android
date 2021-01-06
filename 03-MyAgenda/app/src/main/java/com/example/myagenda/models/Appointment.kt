@@ -4,22 +4,28 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Appointment (
-    var year: Int,
-    var month: Int,
-    var day: Int,
-    var description: String
-): Parcelable {
-
+        var id: Long?,
+        var year: Int,
+        var month: Int,
+        var day: Int,
+        var hour: String,
+        var description: String
+): Parcelable{
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString()!!) {}
+            parcel.readLong(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString()!!,
+            parcel.readString()!!) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(id!!)
         parcel.writeInt(year)
         parcel.writeInt(month)
         parcel.writeInt(day)
+        parcel.writeString(hour)
         parcel.writeString(description)
     }
 

@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 
 class ContactsAdapter(
         var data: ArrayList<Contact>,
-        val itemClickListener: OnItemClickListener
+        val itemClickListener: OnContactClickListener
 ): RecyclerView.Adapter<ContactsViewHolder>() {
     var dataSnapshot: ArrayList<Contact> = ArrayList()
 
@@ -66,14 +66,14 @@ class ContactsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.text_view_name
     private val mobile: TextView = itemView.text_view_mobile
 
-    fun bind(contact: Contact, clickListener: OnItemClickListener){
+    fun bind(contact: Contact, clickListener: OnContactClickListener){
         name.text = contact.name
         mobile.text = contact.mobile
         val iconDrawable = TextDrawable.builder().buildRound(contact.name.first().toString(), generateColor(contact.name))
         icon.setImageDrawable(iconDrawable)
 
         itemView.setOnClickListener{
-            clickListener.onItemClicked(contact)
+            clickListener.onContactClicked(contact)
         }
     }
 
@@ -83,6 +83,6 @@ class ContactsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     }
 }
 
-interface OnItemClickListener{
-    fun onItemClicked(contact: Contact)
+interface OnContactClickListener{
+    fun onContactClicked(contact: Contact)
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.myagenda.R
-import com.example.myagenda.activities.MainActivity
+import java.util.*
 
 class AgendaFragment : Fragment() {
 
@@ -23,8 +23,8 @@ class AgendaFragment : Fragment() {
 
         @JvmStatic
         fun newInstance() =
-                AgendaFragment().apply {
-                    arguments = Bundle().apply {}
-                }
+            AgendaFragment().apply {
+                arguments = Bundle().apply {}
+            }
     }
 }
