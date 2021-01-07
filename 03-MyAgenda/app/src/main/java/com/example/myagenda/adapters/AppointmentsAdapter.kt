@@ -37,12 +37,11 @@ class AppointmentsAdapter(
 }
 
 class AppointmentsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val date: TextView = itemView.text_view_date
+    private val hour: TextView = itemView.text_view_hour
     private val description: TextView = itemView.text_view_description
 
     fun bind(appointment: Appointment, clickListener: OnAppointmentClickListener){
-        val text = appointment.year.toString() + appointment.month.toString() + appointment.day.toString()
-        date.text = text
+        hour.text = appointment.hour
         description.text = appointment.description
 
         itemView.setOnClickListener{

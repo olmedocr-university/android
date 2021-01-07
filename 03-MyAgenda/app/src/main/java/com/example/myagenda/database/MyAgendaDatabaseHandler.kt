@@ -203,7 +203,7 @@ class MyAgendaDatabaseHandler(context: Context) : SQLiteOpenHelper(context, DATA
     }
 
     companion object {
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "myagenda.db"
 
         const val CONTACTS_TABLE_NAME = "contacts"

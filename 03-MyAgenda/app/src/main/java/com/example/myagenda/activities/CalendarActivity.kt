@@ -2,7 +2,6 @@ package com.example.myagenda.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,17 +11,10 @@ import com.example.myagenda.fragments.AgendaListFragment
 import com.example.myagenda.fragments.OnAddAppointmentButtonClickListener
 import com.example.myagenda.models.Appointment
 import kotlinx.android.synthetic.main.activity_calendar.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.fragment_agenda.*
-import kotlinx.android.synthetic.main.fragment_list_agenda.*
 import java.util.*
 
 class CalendarActivity : AppCompatActivity(), OnAppointmentClickListener, OnAddAppointmentButtonClickListener {
-
-    // TODO: controlar el cambio de orientacion en activity calendar
-    // TODO: controlar el cambio de orientacion en activity appointment
-    // TODO: controlar la toolbar del activit appointment
 
     var selectedYear: Int = Calendar.getInstance().get(Calendar.YEAR)
     var selectedMonth: Int = Calendar.getInstance().get(Calendar.MONTH)
@@ -31,6 +23,21 @@ class CalendarActivity : AppCompatActivity(), OnAppointmentClickListener, OnAddA
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
+
+        if (savedInstanceState != null) {
+            // Rotation
+
+            selectedYear = savedInstanceState.getInt("year")
+            selectedMonth = savedInstanceState.getInt("month")
+            selectedDay = savedInstanceState.getInt("day")
+
+            val calendar = Calendar.getInstance()
+            calendar[Calendar.YEAR] = selectedYear
+            calendar[Calendar.MONTH] = selectedMonth
+            calendar[Calendar.DAY_OF_MONTH] = selectedDay
+
+            calendarView.date = calendar.timeInMillis
+        }
 
         setSupportActionBar(toolbar as Toolbar)
 
@@ -47,7 +54,11 @@ class CalendarActivity : AppCompatActivity(), OnAppointmentClickListener, OnAddA
             selectedMonth = i1
             selectedDay = i2
 
-            (fragment_list as AgendaListFragment).updateList(selectedYear, selectedMonth, selectedDay)
+            (supportFragmentManager.findFragmentById(R.id.fragment_list) as AgendaListFragment).updateList(
+                selectedYear,
+                selectedMonth,
+                selectedDay
+            )
         }
     }
 
@@ -56,9 +67,22 @@ class CalendarActivity : AppCompatActivity(), OnAppointmentClickListener, OnAddA
 
         if (requestCode == 0) {
             if (resultCode == 0 ) {
-                (fragment_list as AgendaListFragment).updateList(selectedYear, selectedMonth, selectedDay)
+                (supportFragmentManager.findFragmentById(R.id.fragment_list) as AgendaListFragment).updateList(
+                    selectedYear,
+                    selectedMonth,
+                    selectedDay
+                )
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        outState.putInt("year", selectedYear)
+        outState.putInt("month", selectedMonth)
+        outState.putInt("day", selectedDay)
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun onAppointmentClicked(appointment: Appointment) {
